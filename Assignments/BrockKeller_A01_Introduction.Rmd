@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1: Introduction"
-author: "Student Name"
+author: Brock Keller
 output: pdf_document
 ---
 
@@ -22,15 +22,15 @@ Enter answers to the questions just below the >Answer: prompt.
 
 1. What are your previous experiences with data analytics, R, and Git? Include both formal and informal training.
 
-> Answer: 
+> Answer: I have ~1 year of professional, but relatively basic, data analytics in ArcGIS, and have taken several classes in GIS. I have no experience in R and had never heard of Git before this class. 
 
 2. Are there any components of the course about which you feel confident?
 
-> Answer: 
+> Answer: I feel confident in Excel and understanding statistical tests. 
 
 3. Are there any components of the course about which you feel apprehensive?
 
-> Answer: 
+> Answer: I'm a bit anxious about the coding components of the class because I have no experience in R and my only experience with Python was exploratory and self-taught. 
 
 
 ## 2) GitHub
