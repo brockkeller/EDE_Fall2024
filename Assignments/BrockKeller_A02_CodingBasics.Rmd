@@ -105,7 +105,7 @@ test_results(52.5)
 test_results_modified(52.5)
 
 #13a. Run the first function with the vector of test scores
-first_function_vector <- test_results(test_scores)
+#first_function_vector <- test_results(test_scores)
 
 #first_function_vector
 
