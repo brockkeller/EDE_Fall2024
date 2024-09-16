@@ -1,6 +1,6 @@
 ---
 title: "Assignment 2: Coding Basics"
-author: "Student Name"
+author: "Brock Keller"
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
@@ -32,10 +32,18 @@ This exercise accompanies the lessons/labs in Environmental Data Analytics on co
 
 ```{r basics 1}
 #1. 
+sequence_by_five <- seq(1,55,5) #defining a sequence of numbers from 1, to 55, by 5, and giving it a name
+sequence_by_five #calling that sequence
 
 #2. 
+mean <- mean(sequence_by_five) #defining mean of my sequence
+median <- median(sequence_by_five) #defining median of my sequence
+mean #calling on mean
+median #calling on median
 
 #3. 
+mean>median #simple true or false; is the mean greater than the median?
+
 
 ```
 
@@ -50,13 +58,24 @@ This exercise accompanies the lessons/labs in Environmental Data Analytics on co
 8.  Label the columns of your data frame with informative titles.
 
 ```{r basics 2}
+student_names <- c("Eenie","Meenie","Minie","Moe") #character
+test_scores <- c(60,95,75,80) #numeric
+scholarship <- c(TRUE,TRUE,FALSE,TRUE) #logical
+
+class(student_names)
+class(test_scores)
+class(scholarship)
+
+Student_Results <- data.frame(Name=student_names, Score=test_scores, Scholarship_Status=scholarship)
+Student_Results
 
 
 ```
 
 9.  QUESTION: How is this data frame different from a matrix?
 
-> Answer:
+> Answer: 
+The data frame is different from a matrix becuase it includes multiple types of variables. My data frame has character, numeric, and logical data in the same frame whereas a matrix would be limited to only data of the same type. 
 
 10. Create a function with one input. In this function, use `if`...`else` to evaluate the value of the input: if it is greater than 50, print the word "Pass"; otherwise print the word "Fail". 
 
