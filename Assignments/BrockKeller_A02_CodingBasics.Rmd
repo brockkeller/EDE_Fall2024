@@ -107,7 +107,7 @@ test_results_modified(52.5)
 #13a. Run the first function with the vector of test scores
 first_function_vector <- test_results(test_scores)
 
-first_function_vector
+#first_function_vector
 
 #13b. Run the second function with the vector of test scores
 second_function_vector <- test_results_modified(test_scores)
@@ -118,7 +118,8 @@ second_function_vector
 
 14. QUESTION: Which option of `if`...`else` vs. `ifelse` worked? Why? (Hint: search the web for "R vectorization")
 
-> Answer:ifelse is the only one that worked. if...else gives back the error code "condition has length >1". 
+> Answer:
+ifelse is the only one that worked. if...else gives back the error code "condition has length >1". This is because if...else only evaluates a single element while ifelse() evaluates and returns something for every element in a vector. ifelse() returns a vector of its own results.
 
 
 **NOTE** Before knitting, you'll need to comment out the call to the function in Q13 that does not work. (A document can't knit if the code it contains causes an error!)
