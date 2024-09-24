@@ -37,23 +37,23 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 #install.packages("lubridate")
 #install.packages("here")
 
-#library(tidyverse) #now loading them in
-#library(lubridate)
-#library(here)
+library(tidyverse) #now loading them in
+library(lubridate)
+library(here)
 
-#getwd() #checking working directory
+getwd() #checking working directory
 
-#Neonics <- read.csv(
- # file = here("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv"), 
- # stringsAsFactors = TRUE)
+Neonics <- read.csv(
+ file = here("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv"), 
+  stringsAsFactors = TRUE)
 
-Neonics #calling on it
+#Neonics #calling on it and commented out
 
-#Litter <- read.csv(
- # file = here("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv"),
-#  stringsAsFactors = TRUE)
+Litter <- read.csv(
+  file = here("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv"),
+  stringsAsFactors = TRUE)
 
-Litter #calling on it
+#Litter #calling on it and commented out
 
 ```
 
@@ -114,7 +114,7 @@ summary(species, maxsum = 6)
 
 ```{r}
 class(Neonics$Conc.1..Author.) #says it is a factor
-view(Neonics$Conc.1..Author.)
+#view(Neonics$Conc.1..Author.) #commenting out for knit
 
 ```
 
@@ -227,4 +227,4 @@ The violin plots are not 'zoomed in' enough to effectively see the quantile dist
 
 What type(s) of litter tend to have the highest biomass at these sites?
 
-> Answer: Needes tend to have the highest biomass at the Niwot Ridge sites. 
+> Answer: Needles tend to have the highest biomass at the Niwot Ridge sites. 
