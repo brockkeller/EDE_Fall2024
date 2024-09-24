@@ -1,6 +1,6 @@
 ---
 title: "Assignment 3: Data Exploration"
-author: "Student Name"
+author: Brock Keller
 date: "Fall 2024"
 output: pdf_document
 geometry: margin=2.54cm
@@ -33,8 +33,21 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 1.  Load necessary packages (tidyverse, lubridate, here), check your current working directory and upload two datasets: the ECOTOX neonicotinoid dataset (ECOTOX_Neonicotinoids_Insects_raw.csv) and the Niwot Ridge NEON dataset for litter and woody debris (NEON_NIWO_Litter_massdata_2018-08_raw.csv). Name these datasets "Neonics" and "Litter", respectively. Be sure to include the subcommand to read strings in as factors.
 
 ```{r,  message = FALSE}
+#install.packages("tidyverse") #commenting these out after I installed them
+#install.packages("lubridate")
+#install.packages("here")
 
+#library(tidyverse) #now loading them in
+#library(lubridate)
+#library(here)
 
+getwd() #checking working directory
+
+ECOTOX_Neonicotinoids <- read.csv(
+  file = here("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv"), 
+  stringsAsFactors = TRUE)
+
+ECOTOX_Neonicotinoids #calling on it
 ```
 
 ## Learn about your system
@@ -59,7 +72,7 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 5.  What are the dimensions of the dataset?
 
 ```{r}
-
+str(ECOTOX_Neonicotinoids) #gives structure of the dataset. Tells me it is 4632 observations of 30 variables (30 columns by 4632 rows)
 
 ```
 
@@ -67,6 +80,15 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 
 ```{r}
 
+effects <- (ECOTOX_Neonicotinoids$Effect) #isolating the column I want
+summary(effects) #summarizing that column
+
+class(effects) #couldn't get it to sort by magnitude so I saw here it is stored as a factor
+levels(effects) #seeing what the levels of the factor are
+
+#can't figure out how to sort the factor, but can do it manually for now by running summary(effects)
+
+summary(effects, maxsum = 6) #this is a good way to do it
 
 ```
 
@@ -76,11 +98,12 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: Explore the help on the `summary()` function, in particular the `maxsum` argument...]
 
 ```{r}
-
-
+species <-(ECOTOX_Neonicotinoids$Species.Common.Name)
+summary(species)
+summary(species, maxsum = 6)
 ```
 
-> Answer:
+> Answer: They are bee species
 
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric? [Tip: Viewing the dataframe may be helpful...]
 
