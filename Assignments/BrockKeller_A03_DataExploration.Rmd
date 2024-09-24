@@ -43,11 +43,18 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 
 getwd() #checking working directory
 
-ECOTOX_Neonicotinoids <- read.csv(
+Neonics <- read.csv(
   file = here("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv"), 
   stringsAsFactors = TRUE)
 
-ECOTOX_Neonicotinoids #calling on it
+Neonics #calling on it
+
+Litter <- read.csv(
+  file = here("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv"),
+  stringsAsFactors = TRUE)
+
+Litter
+
 ```
 
 ## Learn about your system
@@ -72,7 +79,7 @@ ECOTOX_Neonicotinoids #calling on it
 5.  What are the dimensions of the dataset?
 
 ```{r}
-str(ECOTOX_Neonicotinoids) #gives structure of the dataset. Tells me it is 4632 observations of 30 variables (30 columns by 4632 rows)
+str(Neonics) #gives structure of the dataset. Tells me it is 4632 observations of 30 variables (30 columns by 4632 rows)
 
 ```
 
@@ -80,7 +87,7 @@ str(ECOTOX_Neonicotinoids) #gives structure of the dataset. Tells me it is 4632 
 
 ```{r}
 
-effects <- (ECOTOX_Neonicotinoids$Effect) #isolating the column I want
+effects <- (Neonics$Effect) #isolating the column I want
 summary(effects) #summarizing that column
 
 class(effects) #couldn't get it to sort by magnitude so I saw here it is stored as a factor
@@ -98,7 +105,7 @@ summary(effects, maxsum = 6) #this is a good way to do it
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: Explore the help on the `summary()` function, in particular the `maxsum` argument...]
 
 ```{r}
-species <-(ECOTOX_Neonicotinoids$Species.Common.Name)
+species <-(Neonics$Species.Common.Name)
 summary(species)
 summary(species, maxsum = 6)
 ```
@@ -108,7 +115,7 @@ summary(species, maxsum = 6)
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric? [Tip: Viewing the dataframe may be helpful...]
 
 ```{r}
-
+class(Neonics$Conc.1..Author.) #says it is a factor
 
 ```
 
@@ -119,45 +126,80 @@ summary(species, maxsum = 6)
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
 ```{r}
-
+ggplot(Neonics) +
+  geom_freqpoly(aes( x = Publication.Year))
 
 ```
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
 ```{r}
+ggplot(Neonics) +
+  geom_freqpoly(aes( x = Publication.Year, color = Test.Location)) #setting color as test location, shows up with key in new plot
 
-
+summary(Neonics$Test.Location) #checking for accuracy
 ```
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer:
+> Answer: Lab and Field natural are by far the most common. Starting around 2000 the number of lab and field natural test locations increase dramatically in frequency. Field artificial shows up a few times from about 2002 to 2016, while Field undeterminable is very rarely seen. 
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information. 
 
 [**TIP**: Add `theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))` to the end of your plot command to rotate and align the X-axis labels...]
 
 ```{r}
+#summary(Neonics$Endpoint, maxsum = 2)
 
+ggplot(Neonics) +
+  geom_bar(aes(x = Endpoint))
+
+            #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))) #the theme thing is not working, I need to troubleshoot this
+           
+           
+           #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)))
 
 ```
 
-> Answer:
+> Answer: The two most common are NOEL and LOEL; 
 
 ## Explore your data (Litter)
 
 12. Determine the class of collectDate. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
 ```{r}
+class(Litter$collectDate)
+#says this is a factor, not a date. 
 
+Litter$collectDate <- as.Date(Litter$collectDate, format = "%Y-%m-%d") #telling R directly that collectDate is a date, not a factor and setting the format
+Litter$collectDate #calling on it to check change
 
+class(Litter$collectDate) #verifying change in data class
+
+august_2018_dates <- Litter$collectDate[format(Litter$collectDate, "%Y-%m") == "2018-08"] #setting object as only dates that have 2018 for year and 08 for month
+august_2018_dates
+
+unique(august_2018_dates) #using unique function on my narrowed august dates object
+
+#so this shows that the only two dates for collection in August 2018 were the 2nd and the 30th
 ```
 
 13. Using the `unique` function, determine how many different plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
 
 ```{r}
+summary(Litter$namedLocation) #these two things are telling me the same thing in just a slightly different way
+summary(Litter$plotID)
 
+plots <- as.character(Litter$plotID) #converting to a character instead of as a factor
+class(plots)
+
+different_plots <- unique(plots) #defining the unique plots
+different_plots
+
+length(different_plots) #having R summarize how many unique plots there are from the character data
+
+summary(as.factor(Litter$plotID))
+#I think the difference is summary tells me how many instances or categories there are for each plot while unique just gives me the actual plots themselves without any repeats or additional data
 
 ```
 
