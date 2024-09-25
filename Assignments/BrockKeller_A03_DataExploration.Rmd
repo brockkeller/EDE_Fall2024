@@ -159,7 +159,7 @@ ggplot(Neonics) +
 
 ```
 
-> Answer: The two most common are NOEL and LOEL, corresponding to the No Observable Effect Level and \\ Lowest Observable Effect Level respectively. Both refer to the doses at which the described response is elicited. 
+> Answer: The two most common are NOEL and LOEL, corresponding to the No Observable Effect Level and \\ Lowest Observable Effect Level respectively. Both refer to the doses at which the described response is elicited.
 
 ## Explore your data (Litter)
 

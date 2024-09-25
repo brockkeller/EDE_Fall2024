@@ -3,6 +3,8 @@ title: "Lab 3b - Workspaces, Dates, and Factors"
 author: "Environmental Data Analytics | John Fay and Luana Lima "
 date: "Fall 2024"
 output: pdf_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ## Objectives
@@ -65,7 +67,8 @@ usgs_flow_data <- read.csv(
 )
 
 #Create and print a list of all files in a folder using "dir" and "here"
-filenames <- dir(here('Data','Raw'),pattern = ("*.csv"))
+filenames <- dir(here('Data','Raw'),
+                 pattern = ("*.csv"))
 print(filenames)
 ```
 
@@ -76,7 +79,7 @@ print(filenames)
   -   Note: You'll have to import `tidyverse` for `%>%` to work. Also, you may need to look at additional arguments in the `dir()` function...
  
 ```{r here in action}
-
+#use the here()thing
 # 1. Read the 'NTL-LTER_Lake_ChemistryPhysics_Raw.csv' into a dataframe
 
 
@@ -102,14 +105,14 @@ Remember formatting of dates in R:
 # (code must be uncommented)
 today <- Sys.Date()
 format(today, format = "%B")
-#format(today, format = "")
-#format(today, format = "")
-#format(today, format = "")
+format(today, format = "%m")
+format(today, format = "%M")
+format(today, format = "%b")
 
 ```
 
 ### The `lubridate()` package
-
+#lubridate is part of the 'tidyverse' thing that just some guy made
 Install and load the package lubridate into your R session. Lubridate offers fast and user friendly parsing of date-time data. Create a string for today's data and then convert it to R date object using lubridate.
 
 More info on lubridate [here][<https://cran.r-project.org/web/packages/lubridate/lubridate.pdf>].
@@ -133,8 +136,8 @@ date_obj_today
 #Ex_3 - on your own...
 str_juneteenth <- "19 June 1865"
 #Since the format is month-day-year we will use function mdy()
-#date_juneteenth <- ()
-#date_juneteenth
+date_juneteenth <- dmy(str_juneteenth)
+date_juneteenth
 ```
 ### The century issue
 
@@ -153,7 +156,7 @@ fix.early.dates <- function(d, cutoff) {
        # The %% operator does modular division i.e. integer-divides 
        # year(d) by 100 and returns the remainder 
        
-       year(d) <- ifelse(m > cutoff, 1900+m, 2000+m)  
+       year(d) <- ifelse(m > cutoff, 1900+m, 2000+m)  #have to define cutoff
        # This will update year(d), year() is the lubridate function that  
        # returns the year for a date object
        return(d)
@@ -172,7 +175,7 @@ fixed_date_obj_past
 str_past <- "55-feb-3"
 
 #Alternative 1
-date_obj_past <- fast_strptime(str_past,"%y-%b-%d",cutoff_2000=24L)
+date_obj_past <- fast_strptime(str_past,"%y-%b-%d",cutoff_2000=24L) #the L at the end here just makes it stored as an integer, long integer, instead of as a float value aka has a decimal
 date_obj_past
 
 #Alternative 2
@@ -232,7 +235,7 @@ summary(sites$dow)
 ### Convert the days of the week to a factor
 ```{r convert dow column to factor and explore}
 
-#Convert to a factor
+#Convert to a factor #what is thiss....
 sites$dow <- factor(sites$dow)
 
 ## What class is the dow column now?
@@ -303,7 +306,7 @@ ggplot(sites,aes(x=dow)) +
 sites$dow <- factor(
   sites$dow, 
   levels=c("1","2","3","4","5","6","7"),
-  labels=c("Sun","Mon","Tue","Wed","Thu","Fri","Sat"))
+  labels=c("Sun","Mon","Chewsday","Wed","Thu","Fri","Sat"))
 
 #See that the levels are updated
 levels(sites$dow)
