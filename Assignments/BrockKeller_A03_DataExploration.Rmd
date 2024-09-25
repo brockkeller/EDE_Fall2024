@@ -79,7 +79,7 @@ Litter <- read.csv(
 5.  What are the dimensions of the dataset?
 
 ```{r}
-str(Neonics) #gives the structure of the dataset. Tells me it is 4632 observations of 30 variables (30 columns by 4632 rows)
+#str(Neonics) #gives the structure of the dataset. Tells me it is 4632 observations of 30 variables (30 columns by 4632 rows) - commented out
 
 ```
 
@@ -104,7 +104,7 @@ summary(effects, maxsum = 6)
 
 ```{r}
 species <-(Neonics$Species.Common.Name)
-summary(species)
+#summary(species) - commenting out
 summary(species, maxsum = 6)
 ```
 
@@ -168,12 +168,12 @@ class(Litter$collectDate)
 #says this is a factor, not a date. 
 
 Litter$collectDate <- as.Date(Litter$collectDate, format = "%Y-%m-%d") #telling R directly that collectDate is a date, not a factor and setting the format
-Litter$collectDate #calling on it to check change
+#Litter$collectDate #calling on it to check change - commented out 
 
 class(Litter$collectDate) #verifying change in data class
 
 august_2018_dates <- Litter$collectDate[format(Litter$collectDate, "%Y-%m") == "2018-08"] #setting object as only dates that have 2018 for year and 08 for month
-august_2018_dates
+#august_2018_dates - commented out
 
 unique(august_2018_dates) #using unique function on my narrowed august dates object
 
