@@ -86,13 +86,13 @@ dim(NC_PM25_2019)
 ```{r questions 3 thru 4}
 #3
 class(NC_O3_2018$Date) #checking the current class
-NC_O3_2018$Date <- as.Date(NC_O3_2018$Date, format = "%m-%d-%Y") #setting it to the correct date format. #this is returning all as NAs. Need to see what is wrong with the code.
+NC_O3_2018$Date <- mdy(NC_O3_2018$Date) #setting it to the correct date format. #this is returning all as NAs. Need to see what is wrong with the code.
 
-NC_O3_2019$Date <- as.Date(NC_O3_2019$Date, format = "%m-%d-%Y")
+NC_O3_2019$Date <- mdy(NC_O3_2019$Date)
 
-NC_PM25_2018$Date <- as.Date(NC_PM25_2018$Date, format = "%m-%d-%Y")
+NC_PM25_2018$Date <- mdy(NC_PM25_2018$Date)
 
-NC_PM25_2019$Date <- as.Date(NC_PM25_2019$Date, format = "%m=%d-%Y")
+NC_PM25_2019$Date <- mdy(NC_PM25_2019$Date)
 
 #4
 NC_O3_2018_select <- select(NC_O3_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
@@ -106,11 +106,35 @@ NC_PM25_2019_select <- select(NC_PM25_2019, Date, DAILY_AQI_VALUE, Site.Name, AQ
 #5
 NC_PM25_2018_select$AQS_PARAMETER_DESC <- "PM2.5"
 
-NC_PM25_2019_select$AQS_PARAMETER_DESC <- "PM2.5"
+NC_PM25_2019_select$AQS_PARAMETER_DESC <- "PM2.5" 
 
 #6
+write.csv(
+  NC_O3_2018_select,
+  file = here("./Data/Processed/EPAair_O3_NC2018_processed.csv"), 
+  row.names = FALSE
+)
+
+write.csv(
+  NC_O3_2019_select,
+  file = here("./Data/Processed/EPAair_03_NC2019_processed.csv"),
+  row.names = FALSE
+)
+
+write.csv(
+  NC_PM25_2018_select,
+  file = here("./Data/Processed/EPAair_PM25_NC2018_processed.csv"),
+  row.names = FALSE
+)
+
+write.csv(
+  NC_PM25_2019_select,
+  file = here("./Data/Processed/EPAair_PM25_NC2019_processed.csv"),
+  row.names = FALSE
+)
 
 
+#this one finally fucking worked so keep this code here!
 
 ```
 
