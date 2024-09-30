@@ -168,18 +168,42 @@ write.csv(
 
 ```{r questions 7 thru 11}
 #7 
+head(NC_O3_2018_select) #verifying that column names are the same
+head(NC_O3_2019_select)
+head(NC_PM25_2018_select)
+head(NC_PM25_2019_select)
 
+NCAir18_19 <- rbind(NC_O3_2018_select, NC_O3_2019_select, NC_PM25_2018_select, NC_PM25_2019_select) #combining my datasets
+NCAir18_19
 
 #8 
-
-
+NCAir_shared_sites <- NCAir18_19 %>% 
+  filter(Site.Name == "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett" | Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" | Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garinger High School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" | Site.Name == "Millbrook School") %>% 
+  group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% 
+  summarize(
+    meanAQI = mean(DAILY_AQI_VALUE),
+    meanlat = mean(SITE_LATITUDE),
+    meanlong = mean(SITE_LONGITUDE)) %>% 
+  mutate(month = month(Date)) %>% 
+  mutate(year = year(Date))
+  
 #9
+
+NCAir_shared_sites_spread <- pivot_wider(NCAir_shared_sites, names_from = AQS_PARAMETER_DESC, values_from = meanAQI)
+#making ozone and pm2.5 each their own column
 
 
 #10
+dim(NCAir_shared_sites_spread)
+
 
 
 #11
+write.csv(
+  NCAir_shared_sites_spread,
+  file = here("./Data/Processed/EPAair_O3_PM25_NC1819_Processed.csv"),
+  row.names = FALSE
+)
 
 
 ```
@@ -194,15 +218,22 @@ write.csv(
 ```{r questions 12 and 13}
 
 #12
+NC_summary <- NCAir_shared_sites_spread %>% 
+  group_by(Site.Name, month, year) %>% 
+  summarise(
+    meanAQI = mean(Ozone),
+    meanPM25 = mean(PM2.5)) %>% 
+  drop_na(meanAQI) #5 by 101 with na.omit but 5 by 182 with drop_na
+
 
 
 #13
-
-
+dim(NC_summary)
 
 ```
 
 14. Why did we use the function `drop_na` rather than `na.omit`? Hint: replace `drop_na` with `na.omit` in part 12 and observe what happens with the dimensions of the summary date frame.
 
 > Answer: 
+na.omit removes observations with NA entirely, resulting in a much smaller data frame (101 rows instead of 182), while drop_na removes NA values only from the specified column, meaning much more of the dataframe is preseved. 
 
