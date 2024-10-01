@@ -35,7 +35,8 @@ library(tidyverse)
 library(lubridate)
 library(here)
 
-library(dplyr) #testing this out to see if it will let me select columns stored as factors. I think it was already installed.
+library(dplyr) #testing this out to see if it will let me select
+#columns stored as factors. I think it was already installed.
 
 #1b 
 getwd()
@@ -86,7 +87,7 @@ dim(NC_PM25_2019)
 ```{r questions 3 thru 4}
 #3
 class(NC_O3_2018$Date) #checking the current class
-NC_O3_2018$Date <- mdy(NC_O3_2018$Date) #setting it to the correct date format. #this is returning all as NAs. Need to see what is wrong with the code.
+NC_O3_2018$Date <- mdy(NC_O3_2018$Date) #setting it to the correct date format.
 
 NC_O3_2019$Date <- mdy(NC_O3_2019$Date)
 
@@ -95,13 +96,17 @@ NC_PM25_2018$Date <- mdy(NC_PM25_2018$Date)
 NC_PM25_2019$Date <- mdy(NC_PM25_2019$Date)
 
 #4
-NC_O3_2018_select <- select(NC_O3_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
+NC_O3_2018_select <- select(NC_O3_2018, Date, DAILY_AQI_VALUE, Site.Name, 
+                            AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
 
-NC_O3_2019_select <- select(NC_O3_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
+NC_O3_2019_select <- select(NC_O3_2019, Date, DAILY_AQI_VALUE, Site.Name, 
+                            AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
 
-NC_PM25_2018_select <- select(NC_PM25_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
+NC_PM25_2018_select <- select(NC_PM25_2018, Date, DAILY_AQI_VALUE, Site.Name, 
+                              AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
 
-NC_PM25_2019_select <- select(NC_PM25_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
+NC_PM25_2019_select <- select(NC_PM25_2019, Date, DAILY_AQI_VALUE, Site.Name, 
+                              AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
 
 #5
 NC_PM25_2018_select$AQS_PARAMETER_DESC <- "PM2.5"
@@ -134,7 +139,6 @@ write.csv(
 )
 
 
-#this one finally fucking worked so keep this code here!
 
 ```
 
@@ -168,17 +172,24 @@ write.csv(
 
 ```{r questions 7 thru 11}
 #7 
-head(NC_O3_2018_select) #verifying that column names are the same
-head(NC_O3_2019_select)
-head(NC_PM25_2018_select)
-head(NC_PM25_2019_select)
+#head(NC_O3_2018_select) #verifying that column names are the same
+#head(NC_O3_2019_select)
+#head(NC_PM25_2018_select)
+#head(NC_PM25_2019_select)
 
-NCAir18_19 <- rbind(NC_O3_2018_select, NC_O3_2019_select, NC_PM25_2018_select, NC_PM25_2019_select) #combining my datasets
-NCAir18_19
+NCAir18_19 <- rbind(NC_O3_2018_select, NC_O3_2019_select,
+                    NC_PM25_2018_select, NC_PM25_2019_select) #combining my datasets
+#NCAir18_19
 
 #8 
 NCAir_shared_sites <- NCAir18_19 %>% 
-  filter(Site.Name == "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett" | Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" | Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garinger High School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" | Site.Name == "Millbrook School") %>% 
+  filter(Site.Name == "Linville Falls" | Site.Name == "Durham Armory" | 
+           Site.Name == "Leggett" | Site.Name == "Hattie Avenue" | 
+           Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" | 
+           Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co."
+         | Site.Name == "Garinger High School" | Site.Name == "Castle Hayne" |
+           Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" |
+           Site.Name == "Millbrook School") %>% 
   group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% 
   summarize(
     meanAQI = mean(DAILY_AQI_VALUE),
@@ -189,7 +200,9 @@ NCAir_shared_sites <- NCAir18_19 %>%
   
 #9
 
-NCAir_shared_sites_spread <- pivot_wider(NCAir_shared_sites, names_from = AQS_PARAMETER_DESC, values_from = meanAQI)
+NCAir_shared_sites_spread <- pivot_wider(NCAir_shared_sites,
+                                         names_from = AQS_PARAMETER_DESC,
+                                         values_from = meanAQI)
 #making ozone and pm2.5 each their own column
 
 
