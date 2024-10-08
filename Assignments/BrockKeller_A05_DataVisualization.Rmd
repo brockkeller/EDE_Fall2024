@@ -110,6 +110,37 @@ Tips:
 
 ```{r Create boxplots}
 #5 
+#making my individual boxplots
+
+PPL_temp_month <-
+  Peter_Paul_nutrients %>% 
+  ggplot(aes(x = factor(month, levels = 1:12, labels = month.abb), y = temperature_C, color = lakename)) + #describing the aesthetics
+  geom_boxplot() + #making the actual plot
+  scale_x_discrete(name = 'Month', drop = FALSE) + #drop lets me keep months w/o data
+  scale_y_discrete(name = "Temperature (C)") #actually naming axis
+
+print(PPL_temp_month)
+
+PPL_tp_month <-
+  Peter_Paul_nutrients %>% 
+  ggplot(aes(x = factor(month, levels = 1:12, labels = month.abb), y = tp_ug, color = lakename)) +
+  geom_boxplot() +
+  scale_x_discrete(name = 'Month', drop = FALSE) +
+  scale_y_discrete(name = "tp (ug)")
+
+print(PPL_tp_month)
+
+PPL_tn_month <-
+  Peter_Paul_nutrients %>% 
+  ggplot(aes(x = factor(month, levels = 1:12, labels = month.abb), y = tn_ug, color = lakename)) +
+  geom_boxplot() +
+  scale_x_discrete(name = 'Month', drop = FALSE) +
+  scale_y_discrete(name = "tn (ug)")
+
+print(PPL_tn_month)
+
+plot_grid(PPL_temp_month, PPL_tp_month, PPL_tn_month)
+
 
 ```
 
