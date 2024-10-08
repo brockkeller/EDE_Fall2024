@@ -74,6 +74,9 @@ Niwot_Ridge_Litter$collectDate <- ymd(Niwot_Ridge_Litter$collectDate)
 
 ```{r build plot theme}
 #3
+my_theme <- theme_tufte() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "top", panel.grid.major = element_line(linetype = "dashed"))
+        
 
 ```
 
@@ -84,6 +87,15 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
+PPL_phosphorous_phosphate <-
+  ggplot(Peter_Paul_nutrients) +
+  geom_point(aes(x = po4, y = tp_ug, color = lakename, shape = lakename)) +
+  xlim(0, 40) +
+  ylim(-5, 160) +
+  geom_smooth(aes(x = po4, y= tp_ug), method = lm, se = FALSE) +
+  my_theme
+
+print(PPL_phosphorous_phosphate)
 
 ```
 
