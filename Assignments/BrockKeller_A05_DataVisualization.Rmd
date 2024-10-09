@@ -175,12 +175,40 @@ As expected, each month sees a negligable difference in water temperature betwee
 
 ```{r Plot litter}
 #6
+theme_set(theme_linedraw())
 
+subset <- Niwot_Ridge_Litter %>% 
+  filter(functionalGroup == "Needles")
+
+class(subset$collectDate) #making sure these are stored as dates
+
+subset$collectDate <- ymd(subset$collectDate) #setting date format
+
+
+Needle_mass_by_date <-
+  subset %>% 
+  ggplot(aes(x = collectDate, y = dryMass, color = nlcdClass)) +
+  geom_point() +
+  scale_x_date(breaks = "50 days") + #adding axis break so the data is visible 
+  labs(title = "Needle Dry Mass by Date", x = "Date", y = "Dry Mass") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), plot.title = element_text(hjust = 0.5, face = "bold"))
+
+
+print(Needle_mass_by_date)
 
 #7
+Needle_mass_by_date_faceted <-   
+  subset %>% 
+  ggplot(aes(x = collectDate, y = dryMass)) +
+  geom_point() +
+  facet_wrap(facets = vars(nlcdClass), ncol = 3, nrow = 1) +
+  scale_x_date(breaks = "40 days") + #adding axis break so the data is visible 
+  labs(title = "Needle Dry Mass by Date", x = "Date", y = "Dry Mass") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), plot.title = element_text(hjust = 0.5, face = "bold"))
 
+print(Needle_mass_by_date_faceted)
 
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer:
+> Answer: I think the faceted plot is significantly more effective at actually telling a story with the data. Even though the points in plot 6 are classified by color, there is just too much noise and it is hard to discern any real trend between or within categories. Having the three plots side by side makes it so much easier to see what the general trends are in each class and also allows you to compare side by side with the others. 
