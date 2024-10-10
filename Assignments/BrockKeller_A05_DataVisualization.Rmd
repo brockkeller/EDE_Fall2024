@@ -76,8 +76,11 @@ Niwot_Ridge_Litter$collectDate <- ymd(Niwot_Ridge_Litter$collectDate)
 ```{r build plot theme}
 #3
 my_theme <- theme_linedraw() + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), panel.grid.minor.y = element_line(size = 0), panel.grid.major.y = element_line(size = 0.08), panel.grid.major.x = element_line(linetype = "dotted", size = 0.25, color = "black"))
-        
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        panel.grid.minor.y = element_line(size = 0), panel.grid.major.y = element_line(size = 0.08), 
+        panel.grid.major.x = element_line(linetype = "dotted", size = 0.25, color = "black"))
+
+#remnants of playing around with this
 #legend.position = "top", took this out of the default theme so it doesnt mess with cowplot
 #panel.grid.major = element_line(linetype = "dotted") a bit ugly
 #panel.grid.major.y = element_line(size = 0.1) 
@@ -120,16 +123,18 @@ Tips:
 ```{r Create boxplots}
 #5 
 #making my individual boxplots
-theme_set(my_theme)
+theme_set(my_theme) #I added the dotted line in this theme because it makes it so much easier
+#for me to see the pairs and what month they correspond to
 
 PPL_temp_month <-
   Peter_Paul_nutrients %>% 
-  ggplot(aes(x = factor(month, levels = 1:12, labels = month.abb), y = temperature_C, color = lakename)) + #describing the aesthetics
+  ggplot(aes(x = factor(month, levels = 1:12, labels = month.abb), y = temperature_C,
+             color = lakename)) + #describing the aesthetics
   geom_boxplot() + #making the actual plot
   scale_x_discrete(name = 'Month', drop = FALSE) + #drop lets me keep months w/o data
   #scale_y_discrete(name = "Temperature (C)") +
   labs(title = "Temperature by Month", y = "Temperature (C)") +
-  theme(legend.position = "none", plot.title = element_text(hjust = 0.5, face = "bold"))
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5, face = "bold", size = 10))
 
 
 print(PPL_temp_month)
@@ -141,7 +146,8 @@ PPL_tp_month <-
   scale_x_discrete(element_blank(), drop = FALSE) +
   #scale_y_discrete(name = "tp (ug)") +
   labs(title = "Phosphorus by Month", y = "tp (ug)") +
-  theme(legend.position = "none", plot.title = element_text(hjust = 0.5, face = "bold")) 
+  theme(legend.position = "top", plot.title = element_text(hjust = 0.5, face = "bold", size = 10), 
+        legend.text = element_text(size = 6)) 
 
 
 print(PPL_tp_month)
@@ -153,7 +159,7 @@ PPL_tn_month <-
   scale_x_discrete(element_blank(), drop = FALSE) + 
   #scale_y_discrete(name = "tn (ug)") +
   labs(title = "Phosphate by Month", y = "tn (ug)") + 
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 10), legend.position = "none")
 
 
 print(PPL_tn_month)
@@ -161,6 +167,8 @@ print(PPL_tn_month)
 together <-
   plot_grid(PPL_temp_month, PPL_tp_month, PPL_tn_month, nrow = 1, align = "hv")
 
+#I know this looks cramped on the PDF but I spent forever making it look gorgeous in R Studio and I
+#can't figure out how to change the display on the knit more than this!
 print(together)
 ```
 
@@ -191,7 +199,8 @@ Needle_mass_by_date <-
   geom_point() +
   scale_x_date(breaks = "50 days") + #adding axis break so the data is visible 
   labs(title = "Needle Dry Mass by Date", x = "Date", y = "Dry Mass") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), plot.title = element_text(hjust = 0.5, face = "bold"))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
 
 
 print(Needle_mass_by_date)
@@ -204,7 +213,8 @@ Needle_mass_by_date_faceted <-
   facet_wrap(facets = vars(nlcdClass), ncol = 3, nrow = 1) +
   scale_x_date(breaks = "40 days") + #adding axis break so the data is visible 
   labs(title = "Needle Dry Mass by Date", x = "Date", y = "Dry Mass") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), plot.title = element_text(hjust = 0.5, face = "bold"))
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
 
 print(Needle_mass_by_date_faceted)
 

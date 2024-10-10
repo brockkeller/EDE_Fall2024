@@ -1,0 +1,27 @@
+---
+title: Interactive Rmd
+output: html_document
+runtime: shiny
+---
+  
+```{r, echo = FALSE} 
+#have to push Run Document up top or else it won't work and like a new tab comes up that you can play around with
+
+
+numericInput(
+  inputId = "n", 
+label = "How many cars?",
+value = 5)
+
+
+numericInput(
+  inputId = "h",
+  label = "How many cars?",
+  value = 5
+)
+
+renderTable({
+head(cars, input$n) #tells him to look for the input wiget where input is "n"
+})
+```
+
