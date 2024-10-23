@@ -3,7 +3,10 @@ title: 'A06 - Crafting Reports'
 author: Brock Keller 
 date: "Fall 2024"
 output: pdf_document
+toc: TRUE
 ---
+
+\listoffigures
 
 ## Objectives:
 
@@ -51,6 +54,8 @@ library(tidyverse)
 library(lubridate)
 library(here)
 library(knitr)
+library(ggplot2)
+library(tidyr)
 
 #Import EPA data (from the processed_KEY folder) & fix dates
 epa_data <- read.csv(
@@ -113,10 +118,42 @@ kable(summary_Ozone, caption = "Mean Ozone")
 
 Below this paragraph, but above the horizonal line (`---`), create two separate code chunks that create boxplots of the distribution of Ozone levels by month using, one for only records collected in 2018 and one for records in 2019. Customize the chunk options such that the final figures are displayed but not the code used to generate the figures. In addition, align the plots on the left side of the page and set the figure heights so both plots fit on the same page with minimal space remaining. Lastly, add a `fig.cap` chunk option to add a caption (title) to your plot that will display underneath the figure.
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align='left', fig.cap= "Ozone by Month 2018", fig.height= 3}
+epa_data$Date <- ymd(epa_data$Date)
+
+Data_2018 <- epa_data %>% 
+  filter(year(epa_data$Date) == 2018) %>% 
+  drop_na(Ozone)
+
+Data_2018$Date <- ymd(Data_2018$Date)
+
+Ozone_by_month_2018 <-
+  Data_2018 %>% 
+  ggplot(aes(x = factor(month(Data_2018$Date), levels = 1:12, labels = month.abb), y = Ozone))+
+  geom_boxplot()+
+  labs(title = "Monthly Ozone concentrations (2018)", x = "Month", y = "Concentration (ug m^3)")
+
+print(Ozone_by_month_2018)
 
 ```
 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align='left', fig.cap= "Ozone by Month 2019", fig.height= 3}
+Data_2019 <- epa_data %>% 
+  filter(year(epa_data$Date) == 2019) %>% 
+  drop_na(Ozone)
+
+Data_2019$Date <- ymd(Data_2019$Date)
+
+Ozone_by_month_2019 <-
+  Data_2019 %>% 
+  ggplot(aes(x = factor(month(Data_2019$Date), levels = 1:12, labels = month.abb), y = Ozone))+
+  geom_boxplot()+
+  labs(title = "Monthly Ozone concentrations (2019)", x = "Month", y = "Concentration (ug m^3)")
+
+print(Ozone_by_month_2019)
+
+```
 
 ---
 
@@ -127,3 +164,6 @@ Below this paragraph, but above the horizonal line (`---`), create two separate 
 Add a table of contents and list of figures to your document and knit to a PDF. Submit your PDF to Sakai, but also be sure to commit and push your Rmd file used to create this knit document to GitHub. In the section below, add a link to your GitHub repository.
 
 ## Git Repository
+[mylink](https://github.com/brockkeller/EDE_Fall2024)
+
+
