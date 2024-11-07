@@ -9,7 +9,6 @@ fig_width: 4
 editor_options: 
   chunk_output_type: console
 ---
-
 ## OVERVIEW
 
 This exercise accompanies the lessons in Environmental Data Analytics on Data Visualization 
@@ -30,7 +29,7 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 
 2. Make sure R is reading dates as date format; if not change the format to date.
 
-```{r initialize project}
+```{r initialize project, message=FALSE, warning=FALSE}
 #1 
 library(tidyverse)
 library(lubridate)
