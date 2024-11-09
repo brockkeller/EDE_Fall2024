@@ -98,7 +98,7 @@ str(Nebraska_gauge_locations_df)
 
 9.    What columns in the dataset contain the x and y coordinate values, respectively?  
 > ANSWER:
-> dec_lat_va represents the x coordinate and dec_long_va the y coordinate.
+> dec_long_va represents the x coordinate and dec_lat_va the y coordinate.
 
 
 ### Convert the dataframe to a spatial features ("sf") dataframe
@@ -111,19 +111,18 @@ str(Nebraska_gauge_locations_df)
 ```{r Convert dataframe to sf dataframe}
 #10. Convert to an sf object
 
-Nebraska_gauge_locations_sf <- st_as_sf(Nebraska_gauge_locations_df, coords = c('dec_lat_va', 'dec_long_va'), crs = 4326)
+Nebraska_gauge_locations_sf <- st_as_sf(Nebraska_gauge_locations_df, coords = c('dec_long_va', 'dec_lat_va'), crs = 4326)
 
 #11. Display the structure
 
 str(Nebraska_gauge_locations_sf)
-
 
 ```
 
 12.   What new field(s) appear in the sf dataframe created? What field(s), if any, disappeared?
 
 >ANSWER: 
->
+> In the sf dataframe, it looks like the fields dec_lat_va and dec_long_va have been replaced by a new 'geometry' field.
 
 
 ### Plot the gage locations on top of the counties
@@ -136,6 +135,12 @@ str(Nebraska_gauge_locations_sf)
 ```{r Plot the spatial features}
 #13. Plot the gage locations atop the county features
 
+gauge_locations_on_counties <- ggplot() +
+  geom_sf(data = Counties_Nebraska_sf, color = 'grey', fill = 'white')+
+  geom_sf(data = Nebraska_gauge_locations_sf, color = 'blue')+
+  labs(title = 'NWIS Gauge Locations in Nebraska', subtitle = 'Brock Keller')
+  
+print(gauge_locations_on_counties)
 
 ```
 
@@ -156,23 +161,35 @@ Lastly, we want to attach some gage height data to our site locations. I've cons
 ```{r Read in gage site data}
 #14. Read the site flow data into a data frame
 
+#Nebraska_Site_Flow_Data <- read_csv('./Data/Raw/NWIS_SiteFlowData_NE_RAW.csv')
+#str(Nebraska_Site_Flow_Data) #checking normal format then importing with factor conversion
 
+Nebraska_Site_Flow_Data <- read_csv('./Data/Raw/NWIS_SiteFlowData_NE_RAW.csv', col_types = cols(
+  site_no = col_factor(),
+  station_nm = col_factor()
+))
+
+str(Nebraska_Site_Flow_Data) #checking that it worked
 
 #15. Show the column names
 
-
+colnames(Nebraska_Site_Flow_Data)
 
 #16. Join the flow data to our NWIS gage location spatial dataframe
 
-
+flow_data_gauge_location_join <- Nebraska_gauge_locations_sf %>% 
+  left_join(
+    Nebraska_Site_Flow_Data,
+    by = "site_no") %>% 
+  drop_na()
 
 #17. Show the column names in the resulting spatial dataframe
 
-
+head(flow_data_gauge_location_join) #using head() to get better look
 
 #18. Show the dimensions of this joined dataset
 
-
+dim(flow_data_gauge_location_join)
 
 ```
 
