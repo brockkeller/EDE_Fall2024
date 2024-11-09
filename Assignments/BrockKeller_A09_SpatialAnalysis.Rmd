@@ -202,6 +202,8 @@ Now we can examine where the flooding appears most acute by visualizing gage hei
 ```{r map gage sites}
 #Map the points, sized by gage height
 
+mapview(Counties_Nebraska_sf)+
+  mapview(flow_data_gauge_location_join, cex = 'gage_ht', zcol = 'gage_ht')
 
 ```
 
@@ -220,10 +222,17 @@ Up next we will do some spatial analysis with our data. To prepare for this, we 
 ```{r spatial analysis}
 #20 Transform the counties and gage location datasets to UTM Zone 14
 
+Counties_UTM <- st_transform(Counties_Nebraska_sf, crs = 32614)
 
+Gauge_Locations_UTM <- st_transform(Nebraska_gauge_locations_sf, crs = 32614)
 
 #21 Plot the data
 
+Counties_and_Gauge_Locations_UTM12N <- ggplot()+
+  geom_sf(data = Counties_UTM, color = 'black', fill = 'brown3', alpha = 0.8)+
+  geom_sf(data = Gauge_Locations_UTM, color = 'deepskyblue')
+
+print(Counties_and_Gauge_Locations_UTM12N)
 
 
 ```
@@ -245,14 +254,35 @@ Now let's zoom into a particular county and examine the gages located there.
 ```{r spatial selection}
 #22 Select the county
 
+Just_Lancaster <- Counties_UTM %>% 
+  filter(NAME == "Lancaster")
 
 #23 Spatially select gages within the selected county
 
+Gauges_Within_Lancaster <- Gauge_Locations_UTM %>% 
+  st_filter(Just_Lancaster, .predicate = st_within)
 
 #24 Spatially select gages within 15 k of the selected county
 
+Lancaster_Buffer <- Just_Lancaster %>% 
+  st_buffer(dist = 15000)
+
+#mapview(Counties_UTM)+
+  #mapview(Lancaster_Buffer) checking here that the number of points within 15km makes sense
+
+#removing the original county area so I don't repeat points in next filter
+Lancaster_Buffer_Exterior <- st_difference(Lancaster_Buffer, Just_Lancaster)
+
+Gauges_Within_15km <- Gauge_Locations_UTM %>% 
+  st_filter(Lancaster_Buffer_Exterior, .predicate = st_within)
 
 #25 Plot
+Gauge_sites_Lancaster_including_buffer <- ggplot()+
+  geom_sf(data = Counties_UTM, fill = 'cornflowerblue', alpha = 0.5)+
+  geom_sf(data = Gauges_Within_Lancaster, color = 'chartreuse4')+
+  geom_sf(data = Gauges_Within_15km, color = 'coral')
+
+print(Gauge_sites_Lancaster_including_buffer)
 
 
 ```
